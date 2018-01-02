@@ -39,15 +39,13 @@ namespace ModernUI.Windows.Controls
             DependencyProperty.Register("ContentLoader", typeof(IContentLoader), typeof(ModernFrame),
                 new PropertyMetadata(new DefaultContentLoader(), OnContentLoaderChanged));
 
-        private static readonly DependencyPropertyKey IsLoadingContentPropertyKey =
-            DependencyProperty.RegisterReadOnly("IsLoadingContent", typeof(bool), typeof(ModernFrame),
-                new PropertyMetadata(false));
-
         /// <summary>
-        ///     Identifies the IsLoadingContent dependency property.
+        /// Identifies the IsLoadingContent dependency property.
         /// </summary>
         public static readonly DependencyProperty IsLoadingContentProperty =
-            IsLoadingContentPropertyKey.DependencyProperty;
+            DependencyProperty.Register("IsLoadingContent", typeof(bool), typeof(ModernFrame),
+                new PropertyMetadata(false));
+
 
         /// <summary>
         ///     Identifies the Source dependency property.
@@ -91,7 +89,7 @@ new List<WeakReference<ModernFrame>>();        // list of registered frames in s
 #endif
         private CancellationTokenSource tokenSource;
         private bool isNavigatingHistory;
-        private bool isResetSource;
+        private bool isResetSource, _isLoadingContent;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ModernFrame" /> class.
@@ -125,7 +123,9 @@ new List<WeakReference<ModernFrame>>();        // list of registered frames in s
             if (e.NewValue == null)
             {
                 // null values for content loader not allowed
+#pragma warning disable RECS0143 // Cannot resolve symbol in text argument
                 throw new ArgumentNullException("ContentLoader");
+#pragma warning restore RECS0143 // Cannot resolve symbol in text argument
             }
         }
 
@@ -209,7 +209,7 @@ new List<WeakReference<ModernFrame>>();        // list of registered frames in s
             Debug.WriteLine("Navigating from '{0}' to '{1}'", oldValue, newValue);
 
             // set IsLoadingContent state
-            SetValue(IsLoadingContentPropertyKey, true);
+            SetValue(IsLoadingContentProperty, true);
 
             // cancel previous load content task (if any)
             // note: no need for thread synchronization, this code always executes on the UI thread
@@ -321,7 +321,7 @@ new List<WeakReference<ModernFrame>>();        // list of registered frames in s
             }
 
             // set IsLoadingContent to false
-            SetValue(IsLoadingContentPropertyKey, false);
+            SetValue(IsLoadingContentProperty, false | _isLoadingContent);
 
             if (!contentIsError)
             {
@@ -360,7 +360,7 @@ new List<WeakReference<ModernFrame>>();        // list of registered frames in s
                     }
                 }
 
-                if (!valid)
+                if (frame != null && !valid)
                 {
                     //raise NavigatedFrom Event
                     if (frame.Content is IContent content)
@@ -634,8 +634,11 @@ new List<WeakReference<ModernFrame>>();        // list of registered frames in s
         /// <summary>
         ///     Gets a value indicating whether this instance is currently loading content.
         /// </summary>
-        public bool IsLoadingContent => (bool)GetValue(IsLoadingContentProperty);
-
+        public bool IsLoadingContent
+        {
+            get => (bool)GetValue(IsLoadingContentProperty);
+            set => SetValue(IsLoadingContentProperty, (_isLoadingContent = value));
+        }
         /// <summary>
         ///     Gets or sets the source of the current content.
         /// </summary>
