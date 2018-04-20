@@ -38,18 +38,22 @@ namespace ModernUI.Presentation
         ///     The location of the dark theme resource dictionary.
         /// </summary>
         public static readonly Uri DarkThemeSource =
+#pragma warning disable S1075 // URIs should not be hardcoded
             new Uri("/ModernUI;component/Assets/ModernUI.Dark.xaml", UriKind.Relative);
+#pragma warning restore S1075 // URIs should not be hardcoded
 
         /// <summary>
         ///     The location of the light theme resource dictionary.
         /// </summary>
         public static readonly Uri LightThemeSource =
+#pragma warning disable S1075 // URIs should not be hardcoded
             new Uri("/ModernUI;component/Assets/ModernUI.Light.xaml", UriKind.Relative);
+#pragma warning restore S1075 // URIs should not be hardcoded
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="AppearanceManager" /> class.
         /// </summary>
-        private AppearanceManager()
+        AppearanceManager()
         {
             DarkThemeCommand = new RelayCommand(o => ThemeSource = DarkThemeSource,
                 o => !DarkThemeSource.Equals(ThemeSource));
@@ -69,7 +73,7 @@ namespace ModernUI.Presentation
             {
                 if (o is Color)
                 {
-                    AccentColor = (Color) o;
+                    AccentColor = (Color)o;
                 }
                 else
                 {
@@ -77,7 +81,7 @@ namespace ModernUI.Presentation
                     string str = o as string;
                     if (str != null)
                     {
-                        AccentColor = (Color) ColorConverter.ConvertFromString(str);
+                        AccentColor = (Color)ColorConverter.ConvertFromString(str);
                     }
                 }
             }, o => o is Color || o is string);
@@ -145,15 +149,15 @@ namespace ModernUI.Presentation
             set => SetAccentColor(value);
         }
 
-        private ResourceDictionary GetThemeDictionary()
+        ResourceDictionary GetThemeDictionary()
         {
             // determine the current theme by looking at the app resources and return the first dictionary having the resource key 'WindowBackground' defined.
             return (from dict in Application.Current.Resources.MergedDictionaries
-                where dict.Contains("WindowBackground")
-                select dict).FirstOrDefault();
+                    where dict.Contains("WindowBackground")
+                    select dict).FirstOrDefault();
         }
 
-        private Uri GetThemeSource()
+        Uri GetThemeSource()
         {
             ResourceDictionary dict = GetThemeDictionary();
             if (dict != null)
@@ -165,7 +169,7 @@ namespace ModernUI.Presentation
             return null;
         }
 
-        private void SetThemeSource(Uri source, bool useThemeAccentColor)
+        void SetThemeSource(Uri source, bool useThemeAccentColor)
         {
             if (source == null)
             {
@@ -174,7 +178,7 @@ namespace ModernUI.Presentation
 
             ResourceDictionary oldThemeDict = GetThemeDictionary();
             Collection<ResourceDictionary> dictionaries = Application.Current.Resources.MergedDictionaries;
-            ResourceDictionary themeDict = new ResourceDictionary {Source = source};
+            ResourceDictionary themeDict = new ResourceDictionary { Source = source };
 
             // if theme defines an accent color, use it
             Color? accentColor = themeDict[KeyAccentColor] as Color?;
@@ -201,27 +205,27 @@ namespace ModernUI.Presentation
             OnPropertyChanged("ThemeSource");
         }
 
-        private void ApplyAccentColor(Color accentColor)
+        void ApplyAccentColor(Color accentColor)
         {
             // set accent color and brush resources
             Application.Current.Resources[KeyAccentColor] = accentColor;
             Application.Current.Resources[KeyAccent] = new SolidColorBrush(accentColor);
         }
 
-        private FontSize GetFontSize()
+        FontSize GetFontSize()
         {
             double? defaultFontSize = Application.Current.Resources[KeyDefaultFontSize] as double?;
 
             if (defaultFontSize.HasValue)
             {
-                return defaultFontSize.Value == 12D ? FontSize.Small : FontSize.Large;
+                return Math.Abs(defaultFontSize.Value - 12D) < double.Epsilon ? FontSize.Small : FontSize.Large;
             }
 
             // default large
             return FontSize.Large;
         }
 
-        private void SetFontSize(FontSize fontSize)
+        void SetFontSize(FontSize fontSize)
         {
             if (GetFontSize() == fontSize)
             {
@@ -234,7 +238,7 @@ namespace ModernUI.Presentation
             OnPropertyChanged("FontSize");
         }
 
-        private Color GetAccentColor()
+        Color GetAccentColor()
         {
             Color? accentColor = Application.Current.Resources[KeyAccentColor] as Color?;
 
@@ -247,7 +251,7 @@ namespace ModernUI.Presentation
             return Color.FromArgb(0xff, 0x1b, 0xa1, 0xe2);
         }
 
-        private void SetAccentColor(Color value)
+        void SetAccentColor(Color value)
         {
             ApplyAccentColor(value);
 

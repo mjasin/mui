@@ -8,8 +8,8 @@ namespace ModernUI.Presentation
     public class RelayCommand
         : CommandBase
     {
-        private readonly Func<object, bool> canExecute;
-        private readonly Action<object> execute;
+        readonly Func<object, bool> canExecute;
+        readonly Action<object> execute;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RelayCommand" /> class.

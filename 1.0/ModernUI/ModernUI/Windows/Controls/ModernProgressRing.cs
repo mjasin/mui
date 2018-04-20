@@ -11,9 +11,9 @@ namespace ModernUI.Windows.Controls
     public class ModernProgressRing
         : Control
     {
-        private const string GroupActiveStates = "ActiveStates";
-        private const string StateInactive = "Inactive";
-        private const string StateActive = "Active";
+        const string GroupActiveStates = "ActiveStates";
+        const string StateInactive = "Inactive";
+        const string StateActive = "Active";
 
         /// <summary>
         ///     Identifies the IsActive property.
@@ -39,7 +39,7 @@ namespace ModernUI.Windows.Controls
             set => SetValue(IsActiveProperty, value);
         }
 
-        private void GotoCurrentState(bool animate)
+        void GotoCurrentState(bool animate)
         {
             string state = IsActive ? StateActive : StateInactive;
 
@@ -57,9 +57,9 @@ namespace ModernUI.Windows.Controls
             GotoCurrentState(false);
         }
 
-        private static void OnIsActiveChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        static void OnIsActiveChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            ((ModernProgressRing) o).GotoCurrentState(true);
+            ((ModernProgressRing)o).GotoCurrentState(true);
         }
     }
 }

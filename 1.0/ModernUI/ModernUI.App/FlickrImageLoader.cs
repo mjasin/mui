@@ -19,7 +19,7 @@ namespace ModernUI.App
     public class FlickrImageLoader
         : IContentLoader
     {
-        private const string apiKey = null; // your flickr API key here
+        const string apiKey = null; // your flickr API key here
 
         /// <summary>
         ///     Asynchronously loads content from specified uri.

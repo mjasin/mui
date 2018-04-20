@@ -24,13 +24,13 @@ namespace ModernUI.Windows.Controls
         public static readonly DependencyProperty ButtonsProperty =
             DependencyProperty.Register("Buttons", typeof(IEnumerable<Button>), typeof(ModernDialog));
 
-        private Button cancelButton;
-        private Button closeButton;
+        Button cancelButton;
+        Button closeButton;
 
-        private Button noButton;
+        Button noButton;
 
-        private Button okButton;
-        private Button yesButton;
+        Button okButton;
+        Button yesButton;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ModernDialog" /> class.
@@ -180,7 +180,7 @@ namespace ModernUI.Windows.Controls
         /// </value>
         public MessageBoxResult MessageBoxResult { get; private set; } = MessageBoxResult.None;
 
-        private Button CreateCloseDialogButton(string content, bool isDefault, bool isCancel, MessageBoxResult result)
+        Button CreateCloseDialogButton(string content, bool isDefault, bool isCancel, MessageBoxResult result)
         {
             return new Button
             {
@@ -225,7 +225,7 @@ namespace ModernUI.Windows.Controls
             return dlg.MessageBoxResult;
         }
 
-        private static IEnumerable<Button> GetButtons(ModernDialog owner, MessageBoxButton button)
+        static IEnumerable<Button> GetButtons(ModernDialog owner, MessageBoxButton button)
         {
             if (button == MessageBoxButton.OK)
             {

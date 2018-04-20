@@ -15,14 +15,14 @@ namespace ModernUI.App.Content
             InitializeComponent();
         }
 
-        private void BlankWindow_Click(object sender, RoutedEventArgs e)
+        void BlankWindow_Click(object sender, RoutedEventArgs e)
         {
             // create a blank modern window with lorem content
             // the BlankWindow ModernWindow styles is found in the mui assembly at Assets/ModernWindowStyles.xaml
 
             ModernWindow wnd = new ModernWindow
             {
-                Style = (Style) Application.Current.Resources["BlankWindow"],
+                Style = (Style)Application.Current.Resources["BlankWindow"],
                 Title = "ModernWindow",
                 IsTitleVisible = true == title.IsChecked,
                 Content = new LoremIpsum(),

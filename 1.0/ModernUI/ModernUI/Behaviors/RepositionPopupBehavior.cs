@@ -30,7 +30,7 @@ namespace ModernUI.Behaviors
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AssociatedObject_Opened(object sender, EventArgs e)
+        void AssociatedObject_Opened(object sender, EventArgs e)
         {
             if (EventsAttached)
                 return;
@@ -47,27 +47,16 @@ namespace ModernUI.Behaviors
         }
 
 
-        private void Window_LocationChanged(object sender, EventArgs e) => UpdatePosition();
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e) => UpdatePosition();
+        void Window_LocationChanged(object sender, EventArgs e) => UpdatePosition();
+        void Window_SizeChanged(object sender, SizeChangedEventArgs e) => UpdatePosition();
 
-        private void UpdatePosition()
+        void UpdatePosition()
         {
             if (!AssociatedObject.IsOpen)
                 return;
 
             AssociatedObject.HorizontalOffset++;
             AssociatedObject.HorizontalOffset--;
-
-            // Attempt to reposition user reflection. 
-            //try
-            //{
-            //    MethodInfo mi = typeof(Popup).GetMethod("UpdatePosition", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            //    mi.Invoke(AssociatedObject, null);
-            //}
-            //catch
-            //{
-            // ignored
-            //}
         }
     }
 }

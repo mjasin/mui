@@ -21,11 +21,11 @@ namespace ModernUI.App
             DependencyProperty.RegisterAttached("UseBingImage", typeof(bool), typeof(BingImage),
                 new PropertyMetadata(OnUseBingImageChanged));
 
-        private static BitmapImage cachedBingImage;
+        static BitmapImage cachedBingImage;
 
-        private static async void OnUseBingImageChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        static async void OnUseBingImageChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            bool newValue = (bool) e.NewValue;
+            bool newValue = (bool)e.NewValue;
             Image image = o as Image;
             ImageBrush imageBrush = o as ImageBrush;
 
@@ -56,7 +56,7 @@ namespace ModernUI.App
             }
         }
 
-        private static async Task<Uri> GetCurrentBingImageUrl()
+        static async Task<Uri> GetCurrentBingImageUrl()
         {
             HttpClient client = new HttpClient();
             HttpResponseMessage result =
@@ -67,7 +67,7 @@ namespace ModernUI.App
                 {
                     XDocument doc = XDocument.Load(stream);
 
-                    string url = (string) doc.XPathSelectElement("/images/image/url");
+                    string url = (string)doc.XPathSelectElement("/images/image/url");
 
                     return new Uri(string.Format(CultureInfo.InvariantCulture, "http://bing.com{0}", url),
                         UriKind.Absolute);

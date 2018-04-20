@@ -38,7 +38,7 @@ namespace ModernUI.App.Content
             DG1.DataContext = custdata;
         }
 
-        private ObservableCollection<Customer> GetData()
+        ObservableCollection<Customer> GetData()
         {
             ObservableCollection<Customer> customers = new ObservableCollection<Customer>();
             customers.Add(new Customer

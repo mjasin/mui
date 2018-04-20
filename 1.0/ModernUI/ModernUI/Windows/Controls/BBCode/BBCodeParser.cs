@@ -14,22 +14,22 @@ namespace ModernUI.Windows.Controls.BBCode
         : Parser<Span>
     {
         // supporting a basic set of BBCode tags
-        private const string TagBold = "b";
+        const string TagBold = "b";
 
-        private const string TagColor = "color";
-        private const string TagItalic = "i";
-        private const string TagSize = "size";
-        private const string TagUnderline = "u";
-        private const string TagUrl = "url";
-        private const string TagStrikethrough = "s";
-        private const string TagQuote = "quote";
-        private const string TagList = "list";
-        private const string TagOrderedList = "ol";
-        private const string TagListItem = "li";
-        private const string TagNewLine = "br";
-        private readonly Brush quoteBrush;
+        const string TagColor = "color";
+        const string TagItalic = "i";
+        const string TagSize = "size";
+        const string TagUnderline = "u";
+        const string TagUrl = "url";
+        const string TagStrikethrough = "s";
+        const string TagQuote = "quote";
+        const string TagList = "list";
+        const string TagOrderedList = "ol";
+        const string TagListItem = "li";
+        const string TagNewLine = "br";
+        readonly Brush quoteBrush;
 
-        private readonly FrameworkElement source;
+        readonly FrameworkElement source;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:BBCodeParser" /> class.
@@ -42,7 +42,7 @@ namespace ModernUI.Windows.Controls.BBCode
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
             this.source = source;
             this.quoteBrush = quoteBrush;
@@ -53,7 +53,9 @@ namespace ModernUI.Windows.Controls.BBCode
         /// </summary>
         public CommandDictionary Commands { get; set; }
 
-        private void ParseTag(string tag, bool start, ParseContext context)
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
+        void ParseTag(string tag, bool start, ParseContext context)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
         {
             if (tag == TagBold)
             {
@@ -70,7 +72,7 @@ namespace ModernUI.Windows.Controls.BBCode
                     Token token = LA(1);
                     if (token.TokenType == BBCodeLexer.TokenAttribute)
                     {
-                        Color color = (Color) ColorConverter.ConvertFromString(token.Value);
+                        Color color = (Color)ColorConverter.ConvertFromString(token.Value);
                         context.Foreground = new SolidColorBrush(color);
 
                         Consume();
@@ -159,16 +161,15 @@ namespace ModernUI.Windows.Controls.BBCode
             {
                 context.IsListItem = start;
             }
-            else if (tag == TagNewLine)
+            else if (tag == TagNewLine && start)
             {
-                if (start)
-                {
-                    context.Parent.Inlines.Add(Environment.NewLine);
-                }
+                context.Parent.Inlines.Add(Environment.NewLine);
             }
         }
 
-        private void Parse(Span span)
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
+        void Parse(Span span)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
         {
             ParseContext context = new ParseContext(span);
 
@@ -283,7 +284,7 @@ namespace ModernUI.Windows.Controls.BBCode
             return span;
         }
 
-        private class ParseContext
+        class ParseContext
         {
             public ParseContext(Span parent)
             {
@@ -310,7 +311,7 @@ namespace ModernUI.Windows.Controls.BBCode
             /// <returns></returns>
             public Run CreateRun(string text)
             {
-                Run run = new Run {Text = text};
+                Run run = new Run { Text = text };
                 if (FontSize.HasValue)
                 {
                     run.FontSize = FontSize.Value;

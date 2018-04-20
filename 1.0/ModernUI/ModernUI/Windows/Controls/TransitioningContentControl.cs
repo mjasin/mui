@@ -29,7 +29,7 @@ namespace ModernUI.Windows.Controls
         /// <summary>
         ///     The storyboard that is used to transition old and new content.
         /// </summary>
-        private Storyboard _currentTransition;
+        Storyboard _currentTransition;
 
 #if !SILVERLIGHT
         /// <summary>
@@ -55,7 +55,7 @@ namespace ModernUI.Windows.Controls
         /// <summary>
         ///     Gets or sets the storyboard that is used to transition old and new content.
         /// </summary>
-        private Storyboard CurrentTransition
+        Storyboard CurrentTransition
         {
             get => _currentTransition;
             set
@@ -142,7 +142,7 @@ namespace ModernUI.Windows.Controls
         /// <param name="newContent">The new content.</param>
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "newContent",
             Justification = "Should be used in the future.")]
-        private void StartTransition(object oldContent, object newContent)
+        void StartTransition(object oldContent, object newContent)
         {
             // both presenters must be available, otherwise a transition is useless.
             if (CurrentContentPresentationSite != null && PreviousContentPresentationSite != null)
@@ -166,7 +166,7 @@ namespace ModernUI.Windows.Controls
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
-        private void OnTransitionCompleted(object sender, EventArgs e)
+        void OnTransitionCompleted(object sender, EventArgs e)
         {
             AbortTransition();
 
@@ -196,7 +196,7 @@ namespace ModernUI.Windows.Controls
         /// </summary>
         /// <param name="newTransition">The new transition.</param>
         /// <returns>A storyboard or null, if no storyboard was found.</returns>
-        private Storyboard GetStoryboard(string newTransition)
+        Storyboard GetStoryboard(string newTransition)
         {
             VisualStateGroup presentationGroup = this.TryGetVisualStateGroup(PresentationGroup);
             Storyboard newStoryboard = null;
@@ -216,13 +216,13 @@ namespace ModernUI.Windows.Controls
         /// <summary>
         ///     The name of the group that holds the presentation states.
         /// </summary>
-        private const string PresentationGroup = "PresentationStates";
+        const string PresentationGroup = "PresentationStates";
 
         /// <summary>
         ///     The name of the state that represents a normal situation where no
         ///     transition is currently being used.
         /// </summary>
-        private const string NormalState = "Normal";
+        const string NormalState = "Normal";
 
         /// <summary>
         ///     The name of the state that represents the default transition.
@@ -251,13 +251,13 @@ namespace ModernUI.Windows.Controls
         ///     Gets or sets the current content presentation site.
         /// </summary>
         /// <value>The current content presentation site.</value>
-        private ContentPresenter CurrentContentPresentationSite { get; set; }
+        ContentPresenter CurrentContentPresentationSite { get; set; }
 
         /// <summary>
         ///     Gets or sets the previous content presentation site.
         /// </summary>
         /// <value>The previous content presentation site.</value>
-        private ContentPresenter PreviousContentPresentationSite { get; set; }
+        ContentPresenter PreviousContentPresentationSite { get; set; }
 
         #endregion TemplateParts
 
@@ -271,7 +271,7 @@ namespace ModernUI.Windows.Controls
         /// <summary>
         ///     Indicates whether the control allows writing IsTransitioning.
         /// </summary>
-        private bool _allowIsTransitioningWrite;
+        bool _allowIsTransitioningWrite;
 
         /// <summary>
         ///     Gets a value indicating whether this instance is currently performing
@@ -308,13 +308,13 @@ namespace ModernUI.Windows.Controls
         /// </summary>
         /// <param name="d">TransitioningContentControl that changed its IsTransitioning.</param>
         /// <param name="e">Event arguments.</param>
-        private static void OnIsTransitioningPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        static void OnIsTransitioningPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            TransitioningContentControl source = (TransitioningContentControl) d;
+            TransitioningContentControl source = (TransitioningContentControl)d;
 
             if (!source._allowIsTransitioningWrite)
             {
-                source.IsTransitioning = (bool) e.OldValue;
+                source.IsTransitioning = (bool)e.OldValue;
                 throw new InvalidOperationException("IsTransitioning property is read-only.");
             }
         }
@@ -348,9 +348,9 @@ namespace ModernUI.Windows.Controls
         /// </summary>
         /// <param name="d">TransitioningContentControl that changed its Transition.</param>
         /// <param name="e">Event arguments.</param>
-        private static void OnTransitionPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        static void OnTransitionPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            TransitioningContentControl source = (TransitioningContentControl) d;
+            TransitioningContentControl source = (TransitioningContentControl)d;
             string oldTransition = e.NewValue as string;
             string newTransition = e.NewValue as string;
 
@@ -415,11 +415,11 @@ namespace ModernUI.Windows.Controls
         /// </summary>
         /// <param name="d">TransitioningContentControl that changed its RestartTransitionOnContentChange.</param>
         /// <param name="e">Event arguments.</param>
-        private static void OnRestartTransitionOnContentChangePropertyChanged(DependencyObject d,
+        static void OnRestartTransitionOnContentChangePropertyChanged(DependencyObject d,
             DependencyPropertyChangedEventArgs e)
         {
-            ((TransitioningContentControl) d).OnRestartTransitionOnContentChangeChanged((bool) e.OldValue,
-                (bool) e.NewValue);
+            ((TransitioningContentControl)d).OnRestartTransitionOnContentChangeChanged((bool)e.OldValue,
+                (bool)e.NewValue);
         }
 
         /// <summary>

@@ -14,14 +14,14 @@ namespace ModernUI.Windows.Controls
     public abstract class DpiAwareWindow
         : Window
     {
-        private readonly bool isPerMonitorDpiAware;
+        readonly bool isPerMonitorDpiAware;
 
-        private HwndSource source;
+        HwndSource source;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DpiAwareWindow" /> class.
         /// </summary>
-        public DpiAwareWindow()
+        protected DpiAwareWindow()
         {
             SourceInitialized += OnSourceInitialized;
 
@@ -57,7 +57,7 @@ namespace ModernUI.Windows.Controls
             SystemEvents.DisplaySettingsChanged -= OnSystemEventsDisplaySettingsChanged;
         }
 
-        private void OnSystemEventsDisplaySettingsChanged(object sender, EventArgs e)
+        void OnSystemEventsDisplaySettingsChanged(object sender, EventArgs e)
         {
             if (source != null && WindowState == WindowState.Minimized)
             {
@@ -65,9 +65,9 @@ namespace ModernUI.Windows.Controls
             }
         }
 
-        private void OnSourceInitialized(object sender, EventArgs e)
+        void OnSourceInitialized(object sender, EventArgs e)
         {
-            source = (HwndSource) PresentationSource.FromVisual(this);
+            source = (HwndSource)PresentationSource.FromVisual(this);
 
             // calculate the DPI used by WPF; this is the same as the system DPI
             Matrix matrix = source.CompositionTarget.TransformToDevice;
@@ -82,12 +82,12 @@ namespace ModernUI.Windows.Controls
             }
         }
 
-        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if (msg == NativeMethods.WM_DPICHANGED)
             {
                 // Marshal the value in the lParam into a Rect.
-                RECT newDisplayRect = (RECT) Marshal.PtrToStructure(lParam, typeof(RECT));
+                RECT newDisplayRect = (RECT)Marshal.PtrToStructure(lParam, typeof(RECT));
 
                 // Set the Window's position & size.
                 Matrix matrix = source.CompositionTarget.TransformFromDevice;
@@ -106,7 +106,7 @@ namespace ModernUI.Windows.Controls
                 double dpiX = wParam.ToInt32() >> 16;
                 double dpiY = wParam.ToInt32() & 0x0000FFFF;
 
-                if (oldDpiX != dpiX || oldDpiY != dpiY)
+                if (Math.Abs(oldDpiX.GetValueOrDefault(default(double)) - dpiX) > double.Epsilon || Math.Abs(oldDpiY.GetValueOrDefault(default(double)) - dpiY) > double.Epsilon)
                 {
                     DpiInformation.UpdateMonitorDpi(dpiX, dpiY);
 
@@ -122,14 +122,14 @@ namespace ModernUI.Windows.Controls
             return IntPtr.Zero;
         }
 
-        private void UpdateLayoutTransform()
+        void UpdateLayoutTransform()
         {
             if (isPerMonitorDpiAware)
             {
-                FrameworkElement root = (FrameworkElement) GetVisualChild(0);
+                FrameworkElement root = (FrameworkElement)GetVisualChild(0);
                 if (root != null)
                 {
-                    if (DpiInformation.ScaleX != 1 || DpiInformation.ScaleY != 1)
+                    if (Math.Abs(DpiInformation.ScaleX - 1) > double.Epsilon || Math.Abs(DpiInformation.ScaleY - 1) > double.Epsilon)
                     {
                         root.LayoutTransform = new ScaleTransform(DpiInformation.ScaleX, DpiInformation.ScaleY);
                     }
@@ -141,13 +141,13 @@ namespace ModernUI.Windows.Controls
             }
         }
 
-        private void UpdateWindowSize(double width, double height)
+        void UpdateWindowSize(double width, double height)
         {
             // determine relative scalex and scaley
             double relScaleX = width / Width;
             double relScaleY = height / Height;
 
-            if (relScaleX != 1 || relScaleY != 1)
+            if (Math.Abs(relScaleX - 1) > double.Epsilon || Math.Abs(relScaleY - 1) > double.Epsilon)
             {
                 // adjust window size constraints as well
                 MinWidth *= relScaleX;
@@ -197,11 +197,7 @@ namespace ModernUI.Windows.Controls
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         protected virtual void OnDpiChanged(EventArgs e)
         {
-            EventHandler handler = DpiChanged;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            DpiChanged?.Invoke(this, e);
         }
     }
 }

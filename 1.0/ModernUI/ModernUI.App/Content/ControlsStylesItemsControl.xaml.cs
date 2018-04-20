@@ -13,24 +13,24 @@ namespace ModernUI.App.Content
             InitializeComponent();
         }
 
-        private MenuItem CreateSubMenu(string header)
+        MenuItem CreateSubMenu(string header)
         {
-            MenuItem item = new MenuItem {Header = header};
-            item.Items.Add(new MenuItem {Header = "Item 1"});
+            MenuItem item = new MenuItem { Header = header };
+            item.Items.Add(new MenuItem { Header = "Item 1" });
             item.Items.Add("Item 2");
             item.Items.Add(new Separator());
             item.Items.Add("Item 3");
             return item;
         }
 
-        private void ShowContextMenu_Click(object sender, RoutedEventArgs e)
+        void ShowContextMenu_Click(object sender, RoutedEventArgs e)
         {
             ContextMenu contextMenu = new ContextMenu();
 
-            contextMenu.Items.Add(new MenuItem {Header = "Item"});
-            contextMenu.Items.Add(new MenuItem {Header = "Item with gesture", InputGestureText = "Ctrl+C"});
-            contextMenu.Items.Add(new MenuItem {Header = "Item, disabled", IsEnabled = false});
-            contextMenu.Items.Add(new MenuItem {Header = "Item, checked", IsChecked = true});
+            contextMenu.Items.Add(new MenuItem { Header = "Item" });
+            contextMenu.Items.Add(new MenuItem { Header = "Item with gesture", InputGestureText = "Ctrl+C" });
+            contextMenu.Items.Add(new MenuItem { Header = "Item, disabled", IsEnabled = false });
+            contextMenu.Items.Add(new MenuItem { Header = "Item, checked", IsChecked = true });
             contextMenu.Items.Add(new MenuItem
             {
                 Header = "Item, checked and disabled",

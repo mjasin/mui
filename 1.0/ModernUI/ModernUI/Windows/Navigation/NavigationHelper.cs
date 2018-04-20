@@ -26,17 +26,19 @@ namespace ModernUI.Windows.Navigation
         /// </summary>
         public const string FrameParent = "_parent";
 
-        /// <summary>
-        ///     Finds the frame identified with given name in the specified context.
-        /// </summary>
-        /// <param name="name">The frame name.</param>
-        /// <param name="context">The framework element providing the context for finding a frame.</param>
-        /// <returns>The frame or null if the frame could not be found.</returns>
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
+                             /// <summary>
+                             ///     Finds the frame identified with given name in the specified context.
+                             /// </summary>
+                             /// <param name="name">The frame name.</param>
+                             /// <param name="context">The framework element providing the context for finding a frame.</param>
+                             /// <returns>The frame or null if the frame could not be found.</returns>
         public static ModernFrame FindFrame(string name, FrameworkElement context)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
         {
             if (context == null)
             {
-                throw new ArgumentNullException("context");
+                throw new ArgumentNullException(nameof(context));
             }
 
             // collect all ancestor frames

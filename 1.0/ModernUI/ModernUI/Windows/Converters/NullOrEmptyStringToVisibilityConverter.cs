@@ -23,11 +23,7 @@ namespace ModernUI.Windows.Converters
         /// </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool flag = value == null;
-            if (value is string)
-            {
-                flag = string.IsNullOrEmpty((string) value);
-            }
+            bool flag = string.IsNullOrEmpty(value as string);
             bool inverse = parameter as string == "inverse";
 
             if (inverse)

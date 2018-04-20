@@ -6,8 +6,8 @@
     public class LinkGroup
         : Displayable
     {
-        private string groupKey;
-        private Link selectedLink;
+        string groupKey;
+        Link selectedLink;
 
         /// <summary>
         ///     Gets or sets the key of the group.

@@ -31,7 +31,7 @@ namespace ModernUI.Windows.Converters
             else if (value is bool?)
             {
                 bool? nullable = (bool?) value;
-                flag = nullable.HasValue ? nullable.Value : false;
+                flag = nullable.HasValue && nullable.Value;
             }
 
             bool inverse = parameter as string == "inverse";

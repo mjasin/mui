@@ -43,7 +43,7 @@ namespace ModernUI.Windows.Controls
             DependencyProperty.Register("SelectedSource", typeof(Uri), typeof(ModernMenu),
                 new PropertyMetadata(OnSelectedSourceChanged));
 
-        private static readonly DependencyPropertyKey VisibleLinkGroupsPropertyKey =
+        static readonly DependencyPropertyKey VisibleLinkGroupsPropertyKey =
             DependencyProperty.RegisterReadOnly("VisibleLinkGroups", typeof(ReadOnlyLinkGroupCollection),
                 typeof(ModernMenu), null);
 
@@ -53,10 +53,10 @@ namespace ModernUI.Windows.Controls
         public static readonly DependencyProperty VisibleLinkGroupsProperty =
             VisibleLinkGroupsPropertyKey.DependencyProperty;
 
-        private readonly Dictionary<string, ReadOnlyLinkGroupCollection> groupMap =
+        readonly Dictionary<string, ReadOnlyLinkGroupCollection> groupMap =
             new Dictionary<string, ReadOnlyLinkGroupCollection>(); // stores LinkGroupCollections by GroupKey
 
-        private bool isSelecting;
+        bool isSelecting;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ModernMenu" /> class.
@@ -115,12 +115,12 @@ namespace ModernUI.Windows.Controls
         /// </summary>
         public event EventHandler<SourceEventArgs> SelectedSourceChanged;
 
-        private static void OnLinkGroupsChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        static void OnLinkGroupsChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            ((ModernMenu) o).OnLinkGroupsChanged((LinkGroupCollection) e.OldValue, (LinkGroupCollection) e.NewValue);
+            ((ModernMenu)o).OnLinkGroupsChanged((LinkGroupCollection)e.OldValue, (LinkGroupCollection)e.NewValue);
         }
 
-        private void OnLinkGroupsChanged(LinkGroupCollection oldValue, LinkGroupCollection newValue)
+        void OnLinkGroupsChanged(LinkGroupCollection oldValue, LinkGroupCollection newValue)
         {
             if (oldValue != null)
             {
@@ -137,10 +137,10 @@ namespace ModernUI.Windows.Controls
             RebuildMenu(newValue);
         }
 
-        private static void OnSelectedLinkGroupChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        static void OnSelectedLinkGroupChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
             // retrieve the selected link from the group
-            LinkGroup group = (LinkGroup) e.NewValue;
+            LinkGroup group = (LinkGroup)e.NewValue;
             Link selectedLink = null;
             if (group != null)
             {
@@ -162,32 +162,32 @@ namespace ModernUI.Windows.Controls
             }
 
             // update the selected link
-            ((ModernMenu) o).SetCurrentValue(SelectedLinkProperty, selectedLink);
+            ((ModernMenu)o).SetCurrentValue(SelectedLinkProperty, selectedLink);
         }
 
-        private static void OnSelectedLinkChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        static void OnSelectedLinkChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
             // update selected source
-            Link newValue = (Link) e.NewValue;
+            Link newValue = (Link)e.NewValue;
             Uri selectedSource = null;
             if (newValue != null)
             {
                 selectedSource = newValue.Source;
             }
-            ((ModernMenu) o).SetCurrentValue(SelectedSourceProperty, selectedSource);
+            ((ModernMenu)o).SetCurrentValue(SelectedSourceProperty, selectedSource);
         }
 
-        private void OnLinkGroupsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void OnLinkGroupsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            RebuildMenu((LinkGroupCollection) sender);
+            RebuildMenu((LinkGroupCollection)sender);
         }
 
-        private static void OnSelectedSourceChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        static void OnSelectedSourceChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            ((ModernMenu) o).OnSelectedSourceChanged((Uri) e.OldValue, (Uri) e.NewValue);
+            ((ModernMenu)o).OnSelectedSourceChanged((Uri)e.OldValue, (Uri)e.NewValue);
         }
 
-        private void OnSelectedSourceChanged(Uri oldValue, Uri newValue)
+        void OnSelectedSourceChanged(Uri oldValue, Uri newValue)
         {
             // Uri "Page1.xaml#111" and "Page1#222" points to the same page, but with a different fragment
             // Must remove the fragment to avoid believing we are on different pages.
@@ -218,13 +218,13 @@ namespace ModernUI.Windows.Controls
         /// </summary>
         /// <param name="group"></param>
         /// <returns></returns>
-        private static string GetGroupKey(LinkGroup group)
+        static string GetGroupKey(LinkGroup group)
         {
             // use special key for GroupKey <null>
             return group.GroupKey ?? "<null>";
         }
 
-        private void RebuildMenu(LinkGroupCollection groups)
+        void RebuildMenu(LinkGroupCollection groups)
         {
             groupMap.Clear();
             if (groups != null)
@@ -251,7 +251,7 @@ namespace ModernUI.Windows.Controls
             UpdateSelection();
         }
 
-        private void UpdateSelection()
+        void UpdateSelection()
         {
             LinkGroup selectedGroup = null;
             Link selectedLink = null;
@@ -262,13 +262,13 @@ namespace ModernUI.Windows.Controls
             {
                 // find the current select group and link based on the selected source
                 var linkInfo = (from g in LinkGroups
-                    from l in g.Links
-                    where l.Source == sourceNoFragment
-                    select new
-                    {
-                        Group = g,
-                        Link = l
-                    }).FirstOrDefault();
+                                from l in g.Links
+                                where l.Source == sourceNoFragment
+                                select new
+                                {
+                                    Group = g,
+                                    Link = l
+                                }).FirstOrDefault();
 
                 if (linkInfo != null)
                 {

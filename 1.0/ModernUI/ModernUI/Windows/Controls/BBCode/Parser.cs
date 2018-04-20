@@ -7,7 +7,7 @@ namespace ModernUI.Windows.Controls.BBCode
     /// </summary>
     internal abstract class Parser<TResult>
     {
-        private readonly TokenBuffer buffer;
+        readonly TokenBuffer buffer;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:Parser" /> class.

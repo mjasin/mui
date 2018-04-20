@@ -9,7 +9,7 @@ namespace ModernUI.App.Pages
     public class DpiAwarenessViewModel
         : NotifyPropertyChanged
     {
-        private readonly DpiAwareWindow wnd;
+        readonly DpiAwareWindow wnd;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DpiAwarenessViewModel" /> class.
@@ -67,12 +67,12 @@ namespace ModernUI.App.Pages
             }
         }
 
-        private void OnWndDpiChanged(object sender, EventArgs e)
+        void OnWndDpiChanged(object sender, EventArgs e)
         {
             OnPropertyChanged(null); // refresh all properties
         }
 
-        private void OnWndSizeChanged(object sender, SizeChangedEventArgs e)
+        void OnWndSizeChanged(object sender, SizeChangedEventArgs e)
         {
             OnPropertyChanged(null); // refresh all properties
         }

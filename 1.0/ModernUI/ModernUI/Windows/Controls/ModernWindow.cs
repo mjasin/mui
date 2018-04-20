@@ -75,13 +75,13 @@ namespace ModernUI.Windows.Controls
         /// <summary>
         ///     Identifies the LinkNavigator dependency property.
         /// </summary>
-        public static DependencyProperty LinkNavigatorProperty = DependencyProperty.Register("LinkNavigator",
+        public static readonly DependencyProperty LinkNavigatorProperty = DependencyProperty.Register("LinkNavigator",
             typeof(ILinkNavigator), typeof(ModernWindow), new PropertyMetadata(new DefaultLinkNavigator()));
 
         /// <summary>
         ///     Identifies the BBCodeTitle dependency property.
         /// </summary>
-        public static DependencyProperty BBCodeTitleProperty =
+        public static readonly DependencyProperty BBCodeTitleProperty =
             DependencyProperty.Register("BBCodeTitle", typeof(string), typeof(ModernWindow),
                 new PropertyMetadata(null));
         /// <summary>
@@ -90,7 +90,7 @@ namespace ModernUI.Windows.Controls
         public static readonly DependencyProperty LogoDataToolTipProperty = 
             DependencyProperty.Register("LogoDataToolTip", typeof(string), typeof(ModernWindow));
 
-        private Storyboard backgroundAnimation;
+        Storyboard backgroundAnimation;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ModernWindow" /> class.
@@ -274,7 +274,7 @@ namespace ModernUI.Windows.Controls
             }
         }
 
-        private void OnAppearanceManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
+        void OnAppearanceManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             // start background animation if theme has changed
             if (e.PropertyName == "ThemeSource" && backgroundAnimation != null)
@@ -283,56 +283,38 @@ namespace ModernUI.Windows.Controls
             }
         }
 
-        private void OnCanNavigateLink(object sender, CanExecuteRoutedEventArgs e)
+        void OnCanNavigateLink(object sender, CanExecuteRoutedEventArgs e)
         {
             // true by default
             e.CanExecute = true;
-
-            if (LinkNavigator != null && LinkNavigator.Commands != null)
+            if (LinkNavigator != null && 
+                LinkNavigator.Commands != null && 
+                NavigationHelper.TryParseUriWithParameters(e.Parameter, out Uri uri, out string parameter, out string targetName) && 
+                LinkNavigator.Commands.TryGetValue(uri, out ICommand command))
             {
-                // in case of command uri, check if ICommand.CanExecute is true
-                Uri uri;
-                string parameter;
-                string targetName;
-
-                // TODO: CanNavigate is invoked a lot, which means a lot of parsing. need improvements??
-                if (NavigationHelper.TryParseUriWithParameters(e.Parameter, out uri, out parameter, out targetName))
-                {
-                    ICommand command;
-                    if (LinkNavigator.Commands.TryGetValue(uri, out command))
-                    {
-                        e.CanExecute = command.CanExecute(parameter);
-                    }
-                }
+                e.CanExecute = command.CanExecute(parameter);
             }
         }
 
-        private void OnNavigateLink(object sender, ExecutedRoutedEventArgs e)
+        void OnNavigateLink(object sender, ExecutedRoutedEventArgs e)
         {
-            if (LinkNavigator != null)
+            if (LinkNavigator != null && NavigationHelper.TryParseUriWithParameters(e.Parameter, out Uri uri, out string parameter, out string targetName))
             {
-                Uri uri;
-                string parameter;
-                string targetName;
-
-                if (NavigationHelper.TryParseUriWithParameters(e.Parameter, out uri, out parameter, out targetName))
-                {
-                    LinkNavigator.Navigate(uri, e.Source as FrameworkElement, parameter);
-                }
+                LinkNavigator.Navigate(uri, e.Source as FrameworkElement, parameter);
             }
         }
 
-        private void OnCanResizeWindow(object sender, CanExecuteRoutedEventArgs e)
+        void OnCanResizeWindow(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = ResizeMode == ResizeMode.CanResize || ResizeMode == ResizeMode.CanResizeWithGrip;
         }
 
-        private void OnCanMinimizeWindow(object sender, CanExecuteRoutedEventArgs e)
+        void OnCanMinimizeWindow(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = ResizeMode != ResizeMode.NoResize;
         }
 
-        private void OnCloseWindow(object target, ExecutedRoutedEventArgs e)
+        void OnCloseWindow(object target, ExecutedRoutedEventArgs e)
         {
 #if NET4
             SystemCommands.CloseWindow(this);
@@ -341,7 +323,7 @@ namespace ModernUI.Windows.Controls
 #endif
         }
 
-        private void OnMaximizeWindow(object target, ExecutedRoutedEventArgs e)
+        void OnMaximizeWindow(object target, ExecutedRoutedEventArgs e)
         {
 #if NET4
             SystemCommands.MaximizeWindow(this);
@@ -350,7 +332,7 @@ namespace ModernUI.Windows.Controls
 #endif
         }
 
-        private void OnMinimizeWindow(object target, ExecutedRoutedEventArgs e)
+        void OnMinimizeWindow(object target, ExecutedRoutedEventArgs e)
         {
 #if NET4
             SystemCommands.MinimizeWindow(this);
@@ -359,7 +341,7 @@ namespace ModernUI.Windows.Controls
 #endif
         }
 
-        private void OnRestoreWindow(object target, ExecutedRoutedEventArgs e)
+        void OnRestoreWindow(object target, ExecutedRoutedEventArgs e)
         {
 #if NET4
             SystemCommands.RestoreWindow(this);

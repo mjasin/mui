@@ -13,7 +13,7 @@ namespace ModernUI.App.Content
             InitializeComponent();
         }
 
-        private void CheckBox_Indeterminate(object sender, RoutedEventArgs e)
+        void CheckBox_Indeterminate(object sender, RoutedEventArgs e)
         {
         }
     }

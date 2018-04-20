@@ -10,7 +10,7 @@ namespace ModernUI
     /// </summary>
     public static class ModernUIHelper
     {
-        private static bool? isInDesignMode;
+        static bool? isInDesignMode;
 
         /// <summary>
         ///     Determines whether the current code is executed in a design time environment such as Visual Studio or Blend.

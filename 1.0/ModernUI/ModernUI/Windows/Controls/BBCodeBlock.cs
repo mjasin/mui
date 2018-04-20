@@ -20,24 +20,24 @@ namespace ModernUI.Windows.Controls
         /// <summary>
         ///     Identifies the BBCode dependency property.
         /// </summary>
-        public static DependencyProperty BBCodeProperty = DependencyProperty.Register("BBCode", typeof(string),
+        public static readonly DependencyProperty BBCodeProperty = DependencyProperty.Register("BBCode", typeof(string),
             typeof(BBCodeBlock), new PropertyMetadata(OnBBCodeChanged));
 
         /// <summary>
         ///     Identifies the LinkNavigator dependency property.
         /// </summary>
-        public static DependencyProperty LinkNavigatorProperty = DependencyProperty.Register("LinkNavigator",
+        public static readonly DependencyProperty LinkNavigatorProperty = DependencyProperty.Register("LinkNavigator",
             typeof(ILinkNavigator), typeof(BBCodeBlock),
             new PropertyMetadata(new DefaultLinkNavigator(), OnLinkNavigatorChanged));
 
         /// <summary>
         ///     Identifies the BBCodeQuote dependency property.
         /// </summary>
-        public static DependencyProperty BBCodeQuoteBackgroundProperty =
+        public static readonly DependencyProperty BBCodeQuoteBackgroundProperty =
             DependencyProperty.Register("BBCodeQuoteBackground", typeof(Brush), typeof(BBCodeBlock),
                 new PropertyMetadata(OnBBCodeQuoteBackgroundChanged));
 
-        private bool dirty;
+        bool dirty;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="BBCodeBlock" /> class.
@@ -81,39 +81,43 @@ namespace ModernUI.Windows.Controls
             set => SetValue(BBCodeQuoteBackgroundProperty, value);
         }
 
-        private static void OnBBCodeChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        static void OnBBCodeChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            ((BBCodeBlock) o).UpdateDirty();
+            ((BBCodeBlock)o).UpdateDirty();
         }
 
-        private static void OnBBCodeQuoteBackgroundChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        static void OnBBCodeQuoteBackgroundChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            ((BBCodeBlock) o).UpdateDirty();
+            ((BBCodeBlock)o).UpdateDirty();
         }
 
-        private static void OnLinkNavigatorChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        static void OnLinkNavigatorChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue == null)
             {
                 // null values disallowed
+#pragma warning disable S3928 // Parameter names used into ArgumentException constructors should match an existing one 
+#pragma warning disable RECS0143 // Cannot resolve symbol in text argument
                 throw new ArgumentNullException("LinkNavigator");
+#pragma warning restore RECS0143 // Cannot resolve symbol in text argument
+#pragma warning restore S3928 // Parameter names used into ArgumentException constructors should match an existing one 
             }
 
-            ((BBCodeBlock) o).UpdateDirty();
+            ((BBCodeBlock)o).UpdateDirty();
         }
 
-        private void OnLoaded(object o, EventArgs e)
+        void OnLoaded(object o, EventArgs e)
         {
             Update();
         }
 
-        private void UpdateDirty()
+        void UpdateDirty()
         {
             dirty = true;
             Update();
         }
 
-        private void Update()
+        void Update()
         {
             if (!IsLoaded || !dirty)
             {
@@ -138,14 +142,14 @@ namespace ModernUI.Windows.Controls
                 catch (Exception)
                 {
                     // parsing failed, display BBCode value as-is
-                    inline = new Run {Text = bbcode};
+                    inline = new Run { Text = bbcode };
                 }
                 Inlines.Add(inline);
             }
             dirty = false;
         }
 
-        private void OnRequestNavigate(object sender, RequestNavigateEventArgs e)
+        void OnRequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             try
             {

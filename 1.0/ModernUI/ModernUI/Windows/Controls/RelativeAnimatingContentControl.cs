@@ -29,23 +29,23 @@ namespace ModernUI.Windows.Controls
         ///     A simple Epsilon-style value used for trying to determine if a double
         ///     has an identifying value.
         /// </summary>
-        private const double SimpleDoubleComparisonEpsilon = 0.000009;
+        const double SimpleDoubleComparisonEpsilon = 0.000009;
 
         /// <summary>
         ///     The last known height of the control.
         /// </summary>
-        private double _knownHeight;
+        double _knownHeight;
 
         /// <summary>
         ///     The last known width of the control.
         /// </summary>
-        private double _knownWidth;
+        double _knownWidth;
 
         /// <summary>
         ///     A set of custom animation adapters used to update the animation
         ///     storyboards when the size of the control changes.
         /// </summary>
-        private List<AnimationValueAdapter> _specialAnimations;
+        List<AnimationValueAdapter> _specialAnimations;
 
         /// <summary>
         ///     Initializes a new instance of the RelativeAnimatingContentControl
@@ -61,7 +61,7 @@ namespace ModernUI.Windows.Controls
         /// </summary>
         /// <param name="sender">The source object.</param>
         /// <param name="e">The event arguments.</param>
-        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+        void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (e != null && e.NewSize.Height > 0 && e.NewSize.Width > 0)
             {
@@ -72,12 +72,14 @@ namespace ModernUI.Windows.Controls
             }
         }
 
-        /// <summary>
-        ///     Walks through the known storyboards in the control's template that
-        ///     may contain identifying values, storing them for future
-        ///     use and updates.
-        /// </summary>
-        private void UpdateAnyAnimationValues()
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
+                             /// <summary>
+                             ///     Walks through the known storyboards in the control's template that
+                             ///     may contain identifying values, storing them for future
+                             ///     use and updates.
+                             /// </summary>
+        void UpdateAnyAnimationValues()
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
         {
             if (_knownHeight > 0 && _knownWidth > 0)
             {
@@ -158,7 +160,7 @@ namespace ModernUI.Windows.Controls
         ///     Walks through all special animations, updating based on the current
         ///     size of the control.
         /// </summary>
-        private void UpdateKnownAnimations()
+        void UpdateKnownAnimations()
         {
             foreach (AnimationValueAdapter adapter in _specialAnimations)
             {
@@ -171,12 +173,12 @@ namespace ModernUI.Windows.Controls
         ///     special values to store with an adapter.
         /// </summary>
         /// <param name="da">The double animation using key frames instance.</param>
-        private void ProcessDoubleAnimationWithKeys(DoubleAnimationUsingKeyFrames da)
+        void ProcessDoubleAnimationWithKeys(DoubleAnimationUsingKeyFrames da)
         {
             // Look through all keyframes in the instance.
             foreach (DoubleKeyFrame frame in da.KeyFrames)
             {
-                DoubleAnimationDimension? d = DoubleAnimationFrameAdapter.GetDimensionFromIdentifyingValue(frame.Value);
+                DoubleAnimationDimension? d = GeneralAnimationValueAdapter<DoubleKeyFrame>.GetDimensionFromIdentifyingValue(frame.Value);
                 if (d.HasValue)
                 {
                     _specialAnimations.Add(new DoubleAnimationFrameAdapter(d.Value, frame));
@@ -188,12 +190,12 @@ namespace ModernUI.Windows.Controls
         ///     Processes a double animation looking for special values.
         /// </summary>
         /// <param name="da">The double animation instance.</param>
-        private void ProcessDoubleAnimation(DoubleAnimation da)
+        void ProcessDoubleAnimation(DoubleAnimation da)
         {
             // Look for a special value in the To property.
             if (da.To.HasValue)
             {
-                DoubleAnimationDimension? d = DoubleAnimationToAdapter.GetDimensionFromIdentifyingValue(da.To.Value);
+                DoubleAnimationDimension? d = GeneralAnimationValueAdapter<DoubleAnimation>.GetDimensionFromIdentifyingValue(da.To.Value);
                 if (d.HasValue)
                 {
                     _specialAnimations.Add(new DoubleAnimationToAdapter(d.Value, da));
@@ -203,7 +205,7 @@ namespace ModernUI.Windows.Controls
             // Look for a special value in the From property.
             if (da.From.HasValue)
             {
-                DoubleAnimationDimension? d = DoubleAnimationFromAdapter.GetDimensionFromIdentifyingValue(da.To.Value);
+                DoubleAnimationDimension? d = GeneralAnimationValueAdapter<DoubleAnimation>.GetDimensionFromIdentifyingValue(da.To.Value);
                 if (d.HasValue)
                 {
                     _specialAnimations.Add(new DoubleAnimationFromAdapter(d.Value, da));
@@ -216,7 +218,7 @@ namespace ModernUI.Windows.Controls
         /// <summary>
         ///     A selection of dimensions of interest for updating an animation.
         /// </summary>
-        private enum DoubleAnimationDimension
+        enum DoubleAnimationDimension
         {
             /// <summary>
             ///     The width (horizontal) dimension.
@@ -234,21 +236,16 @@ namespace ModernUI.Windows.Controls
         ///     animation instance and its properties. Able to update the values at
         ///     runtime.
         /// </summary>
-        private abstract class AnimationValueAdapter
+        abstract class AnimationValueAdapter
         {
             /// <summary>
             ///     Initializes a new instance of the AnimationValueAdapter type.
             /// </summary>
             /// <param name="dimension">The dimension of interest for updates.</param>
-            public AnimationValueAdapter(DoubleAnimationDimension dimension)
+            protected AnimationValueAdapter(DoubleAnimationDimension dimension)
             {
                 Dimension = dimension;
             }
-
-            /// <summary>
-            ///     Gets or sets the original double value.
-            /// </summary>
-            protected double OriginalValue { get; set; }
 
             /// <summary>
             ///     Gets the dimension of interest for the control.
@@ -265,29 +262,39 @@ namespace ModernUI.Windows.Controls
             public abstract void UpdateWithNewDimension(double width, double height);
         }
 
-        private abstract class GeneralAnimationValueAdapter<T> : AnimationValueAdapter
+        abstract class GeneralAnimationValueAdapter<T> : AnimationValueAdapter
         {
             /// <summary>
             ///     The ratio based on the original identifying value, used for computing
             ///     the updated animation property of interest when the size of the
             ///     control changes.
             /// </summary>
-            private readonly double _ratio;
+            readonly double _ratio;
 
-            /// <summary>
-            ///     Initializes a new instance of the GeneralAnimationValueAdapter
-            ///     type.
-            /// </summary>
-            /// <param name="d">The dimension of interest.</param>
-            /// <param name="instance">The animation type instance.</param>
+#pragma warning disable RECS0120 // Constructor in abstract class should not be public
+#pragma warning disable S3442 // "abstract" classes should not have "public" constructors
+#pragma warning disable S1144 // Unused private types or members should be removed
+                             /// <summary>
+                             ///     Initializes a new instance of the GeneralAnimationValueAdapter
+                             ///     type.
+                             /// </summary>
+                             /// <param name="d">The dimension of interest.</param>
+                             /// <param name="instance">The animation type instance.</param>
             public GeneralAnimationValueAdapter(DoubleAnimationDimension d, T instance)
+#pragma warning restore S3442 // "abstract" classes should not have "public" constructors
+#pragma warning restore RECS0120 // Constructor in abstract class should not be public
                 : base(d)
             {
                 Instance = instance;
 
+#pragma warning disable RECS0021 // Warns about calls to virtual member functions occuring in the constructor
+#pragma warning disable S1699 // Constructors should only call non-overridable methods
                 InitialValue = StripIdentifyingValueOff(GetValue());
+#pragma warning restore S1699 // Constructors should only call non-overridable methods
+#pragma warning restore RECS0021 // Warns about calls to virtual member functions occuring in the constructor
                 _ratio = InitialValue / 100;
             }
+#pragma warning restore S1144 // Unused private types or members should be removed
 
             /// <summary>
             ///     Stores the animation instance.
@@ -369,7 +376,7 @@ namespace ModernUI.Windows.Controls
             ///     The size of interest to use with a ratio
             ///     computation.
             /// </param>
-            private void UpdateValue(double sizeToUse)
+            void UpdateValue(double sizeToUse)
             {
                 SetValue(sizeToUse * _ratio);
             }
@@ -378,7 +385,7 @@ namespace ModernUI.Windows.Controls
         /// <summary>
         ///     Adapter for DoubleAnimation's To property.
         /// </summary>
-        private class DoubleAnimationToAdapter : GeneralAnimationValueAdapter<DoubleAnimation>
+        class DoubleAnimationToAdapter : GeneralAnimationValueAdapter<DoubleAnimation>
         {
             /// <summary>
             ///     Initializes a new instance of the DoubleAnimationToAdapter type.
@@ -396,7 +403,7 @@ namespace ModernUI.Windows.Controls
             /// <returns>Returns the value of the property.</returns>
             protected override double GetValue()
             {
-                return (double) Instance.To;
+                return (double)Instance.To;
             }
 
             /// <summary>
@@ -412,7 +419,7 @@ namespace ModernUI.Windows.Controls
         /// <summary>
         ///     Adapter for DoubleAnimation's From property.
         /// </summary>
-        private class DoubleAnimationFromAdapter : GeneralAnimationValueAdapter<DoubleAnimation>
+        class DoubleAnimationFromAdapter : GeneralAnimationValueAdapter<DoubleAnimation>
         {
             /// <summary>
             ///     Initializes a new instance of the DoubleAnimationFromAdapter
@@ -431,7 +438,7 @@ namespace ModernUI.Windows.Controls
             /// <returns>Returns the value of the property.</returns>
             protected override double GetValue()
             {
-                return (double) Instance.From;
+                return (double)Instance.From;
             }
 
             /// <summary>
@@ -447,7 +454,7 @@ namespace ModernUI.Windows.Controls
         /// <summary>
         ///     Adapter for double key frames.
         /// </summary>
-        private class DoubleAnimationFrameAdapter : GeneralAnimationValueAdapter<DoubleKeyFrame>
+        class DoubleAnimationFrameAdapter : GeneralAnimationValueAdapter<DoubleKeyFrame>
         {
             /// <summary>
             ///     Initializes a new instance of the DoubleAnimationFrameAdapter

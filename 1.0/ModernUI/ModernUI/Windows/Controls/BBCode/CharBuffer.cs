@@ -8,9 +8,9 @@ namespace ModernUI.Windows.Controls.BBCode
     /// </summary>
     internal class CharBuffer
     {
-        private int mark;
-        private int position;
-        private readonly string value;
+        int mark;
+        int position;
+        readonly string value;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:CharBuffer" /> class.

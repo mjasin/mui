@@ -16,7 +16,7 @@ namespace ModernUI.App.Content
             Loaded += OnLoaded;
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
+        void OnLoaded(object sender, RoutedEventArgs e)
         {
             // select first control on the form
             Keyboard.Focus(TextFirstName);

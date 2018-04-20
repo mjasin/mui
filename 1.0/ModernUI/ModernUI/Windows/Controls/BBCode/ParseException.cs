@@ -2,10 +2,12 @@
 
 namespace ModernUI.Windows.Controls.BBCode
 {
-    /// <summary>
-    ///     The exception for parse errors.
-    /// </summary>
-    internal class ParseException
+#pragma warning disable S3925 // "ISerializable" should be implemented correctly
+                             /// <summary>
+                             ///     The exception for parse errors.
+                             /// </summary>
+    public class ParseException
+#pragma warning restore S3925 // "ISerializable" should be implemented correctly
         : Exception
     {
         /// <summary>

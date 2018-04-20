@@ -14,8 +14,8 @@ namespace ModernUI.Windows.Controls.BBCode
         /// </summary>
         public const int TokenEnd = int.MaxValue;
 
-        private readonly CharBuffer buffer;
-        private readonly Stack<int> states;
+        readonly CharBuffer buffer;
+        readonly Stack<int> states;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:Lexer" /> class.
@@ -49,7 +49,7 @@ namespace ModernUI.Windows.Controls.BBCode
             }
         }
 
-        private static void ValidateOccurence(int count, int minOccurs, int maxOccurs)
+        static void ValidateOccurence(int count, int minOccurs, int maxOccurs)
         {
             if (count < minOccurs || count > maxOccurs)
             {

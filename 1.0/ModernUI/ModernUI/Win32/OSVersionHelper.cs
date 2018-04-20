@@ -43,7 +43,8 @@ namespace ModernUI.Win32
         ///     http://msdn.microsoft.com/library/windows/desktop/ms724833.aspx
         /// </summary>
         [StructLayout(LayoutKind.Sequential)]
-        private struct OsVersionInfoEx
+#pragma warning disable S1144 // Unused private types or members should be removed
+        struct OsVersionInfoEx
         {
             /// <summary>
             ///     The size of this data structure, in bytes.
@@ -60,9 +61,10 @@ namespace ModernUI.Win32
             /// </summary>
             public uint MinorVersion;
 
-            /// <summary>
-            ///     The build number of the operating system.
-            /// </summary>
+
+                             /// <summary>
+                             ///     The build number of the operating system.
+                             /// </summary>
             public readonly uint BuildNumber;
 
             /// <summary>
@@ -111,7 +113,7 @@ namespace ModernUI.Win32
             /// </summary>
             public readonly byte Reserved;
         }
-
+#pragma warning restore S1144 // Unused private types or members should be removed
         #endregion // PInvoke data type declarations
 
         #region Supplementary data types
@@ -181,7 +183,7 @@ namespace ModernUI.Win32
         /// <summary>
         ///     Information about operating system.
         /// </summary>
-        private sealed class OsEntry
+        sealed class OsEntry
         {
             #region Constructor
 
@@ -281,7 +283,7 @@ namespace ModernUI.Win32
         /// </param>
         /// <returns>Condition mask value.</returns>
         [DllImport("kernel32.dll")]
-        private static extern ulong VerSetConditionMask(ulong dwlConditionMask,
+        static extern ulong VerSetConditionMask(ulong dwlConditionMask,
             uint dwTypeBitMask, byte dwConditionMask);
 
         /// <summary>
@@ -314,7 +316,7 @@ namespace ModernUI.Win32
         ///     requirements; otherwise, false.
         /// </returns>
         [DllImport("kernel32.dll")]
-        private static extern bool VerifyVersionInfo(
+        static extern bool VerifyVersionInfo(
             [In] ref OsVersionInfoEx lpVersionInfo,
             uint dwTypeMask, ulong dwlConditionMask);
 
@@ -322,12 +324,12 @@ namespace ModernUI.Win32
 
         #region Local fields
 
-        private static readonly Dictionary<KnownOS, OsEntry> osEntries;
+        static readonly Dictionary<KnownOS, OsEntry> osEntries;
 
-        private static bool? isServer = null;
+        static bool? isServer = null;
 
-        private static ulong? versionOrGreaterMask;
-        private static uint? versionOrGreaterTypeMask;
+        static ulong? versionOrGreaterMask;
+        static uint? versionOrGreaterTypeMask;
 
         #endregion // Local fields
 

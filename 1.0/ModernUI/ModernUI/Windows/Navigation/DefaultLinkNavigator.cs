@@ -22,6 +22,7 @@ namespace ModernUI.Windows.Navigation
         public DefaultLinkNavigator()
         {
             // register all ApperanceManager commands
+#pragma warning disable S1075 // URIs should not be hardcoded
             Commands.Add(new Uri("cmd://accentcolor"), AppearanceManager.Current.AccentColorCommand);
             Commands.Add(new Uri("cmd://darktheme"), AppearanceManager.Current.DarkThemeCommand);
             Commands.Add(new Uri("cmd://largefontsize"), AppearanceManager.Current.LargeFontSizeCommand);
@@ -35,6 +36,7 @@ namespace ModernUI.Windows.Navigation
 
             // register application commands
             Commands.Add(new Uri("cmd://copy"), ApplicationCommands.Copy);
+#pragma warning restore S1075 // URIs should not be hardcoded
         }
 
         /// <summary>
@@ -56,11 +58,11 @@ namespace ModernUI.Windows.Navigation
         /// <param name="uri">The uri to navigate to.</param>
         /// <param name="source">The source element that triggers the navigation. Required for frame navigation.</param>
         /// <param name="parameter">An optional command parameter or navigation target.</param>
-        public virtual void Navigate(Uri uri, FrameworkElement source = null, string parameter = null)
+        public virtual void Navigate(Uri uri, FrameworkElement source, string parameter = null)
         {
             if (uri == null)
             {
-                throw new ArgumentNullException("uri");
+                throw new ArgumentNullException(nameof(uri));
             }
 
             // first check if uri refers to a command

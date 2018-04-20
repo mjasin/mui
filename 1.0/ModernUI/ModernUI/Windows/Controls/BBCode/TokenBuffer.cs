@@ -8,10 +8,9 @@ namespace ModernUI.Windows.Controls.BBCode
     /// </summary>
     internal class TokenBuffer
     {
-        private int position;
+        int position;
 
-        private readonly List<Token> tokens = new List<Token>();
-        //private int mark;
+        readonly List<Token> tokens = new List<Token>();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:TokenBuffer" /> class.
@@ -21,7 +20,7 @@ namespace ModernUI.Windows.Controls.BBCode
         {
             if (lexer == null)
             {
-                throw new ArgumentNullException("lexer");
+                throw new ArgumentNullException(nameof(lexer));
             }
 
             Token token;
@@ -47,31 +46,6 @@ namespace ModernUI.Windows.Controls.BBCode
 
             return Token.End;
         }
-
-        ///// <summary>
-        ///// Marks the current position.
-        ///// </summary>
-        //public void Mark()
-        //{
-        //    this.mark = this.position;
-        //}
-
-        ///// <summary>
-        ///// Gets the mark.
-        ///// </summary>
-        ///// <returns></returns>
-        //public Token[] GetMark()
-        //{
-        //    if (this.mark < this.position) {
-        //        Token[] result = new Token[this.position - this.mark];
-        //        for (int i = this.mark; i < this.position; i++) {
-        //            result[i - this.mark] = this.tokens[i];
-        //        }
-
-        //        return result;
-        //    }
-        //    return new Token[0];
-        //}
 
         /// <summary>
         ///     Consumes the next token.

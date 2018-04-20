@@ -9,7 +9,7 @@ namespace ModernUI.App.Content
     /// </summary>
     public partial class ControlsModernFrame : UserControl
     {
-        private string eventLogMessage;
+        string eventLogMessage;
 
         public ControlsModernFrame()
         {
@@ -18,7 +18,7 @@ namespace ModernUI.App.Content
             TextEvents.Text = eventLogMessage;
         }
 
-        private void LogMessage(string message, params object[] o)
+        void LogMessage(string message, params object[] o)
         {
             message = string.Format(CultureInfo.CurrentUICulture, message, o);
 
@@ -32,22 +32,22 @@ namespace ModernUI.App.Content
             }
         }
 
-        private void Frame_FragmentNavigation(object sender, FragmentNavigationEventArgs e)
+        void Frame_FragmentNavigation(object sender, FragmentNavigationEventArgs e)
         {
             LogMessage("FragmentNavigation: {0}\r\n", e.Fragment);
         }
 
-        private void Frame_Navigated(object sender, NavigationEventArgs e)
+        void Frame_Navigated(object sender, NavigationEventArgs e)
         {
             LogMessage("Navigated: [{0}] {1}\r\n", e.NavigationType, e.Source);
         }
 
-        private void Frame_Navigating(object sender, NavigatingCancelEventArgs e)
+        void Frame_Navigating(object sender, NavigatingCancelEventArgs e)
         {
             LogMessage("Navigating: [{0}] {1}\r\n", e.NavigationType, e.Source);
         }
 
-        private void Frame_NavigationFailed(object sender, NavigationFailedEventArgs e)
+        void Frame_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             LogMessage("NavigationFailed: {0}\r\n", e.Error.Message);
         }

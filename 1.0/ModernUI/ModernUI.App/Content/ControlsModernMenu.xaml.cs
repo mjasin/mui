@@ -11,8 +11,8 @@ namespace ModernUI.App.Content
     /// </summary>
     public partial class ControlsModernMenu : UserControl
     {
-        private int groupId = 2;
-        private int linkId = 5;
+        int groupId = 2;
+        int linkId = 5;
 
         public ControlsModernMenu()
         {

@@ -18,9 +18,9 @@ namespace ModernUI.App.Content
             LoadImageLinks();
         }
 
-        private async void LoadImageLinks()
+        async void LoadImageLinks()
         {
-            FlickrImageLoader loader = (FlickrImageLoader) Tab.ContentLoader;
+            FlickrImageLoader loader = (FlickrImageLoader)Tab.ContentLoader;
 
             try
             {

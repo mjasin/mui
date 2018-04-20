@@ -12,14 +12,14 @@ namespace ModernUI.App.Content
     public class SettingsAppearanceViewModel
         : NotifyPropertyChanged
     {
-        private const string FontSmall = "small";
-        private const string FontLarge = "large";
+        const string FontSmall = "small";
+        const string FontLarge = "large";
 
-        private const string PaletteMetro = "metro";
-        private const string PaletteWP = "windows phone";
+        const string PaletteMetro = "metro";
+        const string PaletteWP = "windows phone";
 
         // 9 accent colors from metro design principles
-        private readonly Color[] metroAccentColors =
+        readonly Color[] metroAccentColors =
         {
             Color.FromRgb(0x33, 0x99, 0xff), // blue
             Color.FromRgb(0x00, 0xab, 0xa9), // teal
@@ -32,14 +32,14 @@ namespace ModernUI.App.Content
             Color.FromRgb(0xa2, 0x00, 0xff) // purple            
         };
 
-        private Color selectedAccentColor;
-        private string selectedFontSize;
+        Color selectedAccentColor;
+        string selectedFontSize;
 
-        private string selectedPalette = PaletteWP;
-        private Link selectedTheme;
+        string selectedPalette = PaletteWP;
+        Link selectedTheme;
 
         // 20 accent colors from Windows Phone 8
-        private readonly Color[] wpAccentColors =
+        readonly Color[] wpAccentColors =
         {
             Color.FromRgb(0xa4, 0xc4, 0x00), // lime
             Color.FromRgb(0x60, 0xa9, 0x17), // green
@@ -166,7 +166,7 @@ namespace ModernUI.App.Content
             }
         }
 
-        private void SyncThemeAndColor()
+        void SyncThemeAndColor()
         {
             // synchronizes the selected viewmodel theme with the actual theme used by the appearance manager.
             SelectedTheme = Themes.FirstOrDefault(l => l.Source.Equals(AppearanceManager.Current.ThemeSource));
@@ -175,7 +175,7 @@ namespace ModernUI.App.Content
             SelectedAccentColor = AppearanceManager.Current.AccentColor;
         }
 
-        private void OnAppearanceManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
+        void OnAppearanceManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "ThemeSource" || e.PropertyName == "AccentColor")
             {

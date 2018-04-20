@@ -41,9 +41,9 @@
         /// </summary>
         public const int StateTag = 1;
 
-        private static readonly char[] QuoteChars = {'\'', '"'};
-        private static readonly char[] WhitespaceChars = {' ', '\t'};
-        private static readonly char[] NewlineChars = {'\r', '\n'};
+        static readonly char[] QuoteChars = { '\'', '"' };
+        static readonly char[] WhitespaceChars = { ' ', '\t' };
+        static readonly char[] NewlineChars = { '\r', '\n' };
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:BBCodeLexer" /> class.
@@ -60,12 +60,12 @@
         /// <value>The state of the default.</value>
         protected override int DefaultState => StateNormal;
 
-        private bool IsTagNameChar()
+        bool IsTagNameChar()
         {
-            return IsInRange('A', 'Z') || IsInRange('a', 'z') || IsInRange(new[] {'*'});
+            return IsInRange('A', 'Z') || IsInRange('a', 'z') || IsInRange(new[] { '*' });
         }
 
-        private Token OpenTag()
+        Token OpenTag()
         {
             Match('[');
             Mark();
@@ -75,7 +75,7 @@
             return new Token(GetMark(), TokenStartTag);
         }
 
-        private Token CloseTag()
+        Token CloseTag()
         {
             Match('[');
             Match('/');
@@ -89,7 +89,7 @@
             return token;
         }
 
-        private Token Newline()
+        Token Newline()
         {
             Match('\r', 0, 1);
             Match('\n');
@@ -97,7 +97,7 @@
             return new Token(string.Empty, TokenLineBreak);
         }
 
-        private Token Text()
+        Token Text()
         {
             Mark();
             while (LA(1) != '[' && LA(1) != char.MaxValue && !IsInRange(NewlineChars))
@@ -105,7 +105,7 @@
             return new Token(GetMark(), TokenText);
         }
 
-        private Token EscapedTag()
+        Token EscapedTag()
         {
             Mark();
             Consume();
@@ -115,7 +115,7 @@
             return new Token(result.Substring(0, 1) + result.Substring(2), TokenText);
         }
 
-        private Token Attribute()
+        Token Attribute()
         {
             Match('=');
             while (IsInRange(WhitespaceChars))
@@ -146,11 +146,13 @@
             return token;
         }
 
-        /// <summary>
-        ///     Gets the next token.
-        /// </summary>
-        /// <returns></returns>
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
+                             /// <summary>
+                             ///     Gets the next token.
+                             /// </summary>
+                             /// <returns></returns>
         public override Token NextToken()
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
         {
             if (LA(1) == char.MaxValue)
             {

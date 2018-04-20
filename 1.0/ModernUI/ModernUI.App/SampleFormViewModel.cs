@@ -6,8 +6,8 @@ namespace ModernUI.App
     public class SampleFormViewModel
         : NotifyPropertyChanged, IDataErrorInfo
     {
-        private string firstName = "John";
-        private string lastName;
+        string firstName = "John";
+        string lastName;
 
         public string FirstName
         {

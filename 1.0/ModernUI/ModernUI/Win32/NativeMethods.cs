@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace ModernUI.Win32
 {
-    internal class NativeMethods
+    static class NativeMethods
     {
         public const int S_OK = 0;
         public const int WM_DPICHANGED = 0x02E0;

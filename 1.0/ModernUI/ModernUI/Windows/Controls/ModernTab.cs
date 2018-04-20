@@ -47,7 +47,7 @@ namespace ModernUI.Windows.Controls
             DependencyProperty.Register("SelectedSource", typeof(Uri), typeof(ModernTab),
                 new PropertyMetadata(OnSelectedSourceChanged));
 
-        private ListBox linkList;
+        ListBox linkList;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ModernTab" /> control.
@@ -114,29 +114,27 @@ namespace ModernUI.Windows.Controls
         /// </summary>
         public event EventHandler<SourceEventArgs> SelectedSourceChanged;
 
-        private static void OnLinksChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        static void OnLinksChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            ((ModernTab) o).UpdateSelection();
+            ((ModernTab)o).UpdateSelection();
         }
 
-        private static void OnSelectedSourceChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        static void OnSelectedSourceChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            ((ModernTab) o).OnSelectedSourceChanged((Uri) e.OldValue, (Uri) e.NewValue);
+            ((ModernTab)o).OnSelectedSourceChanged((Uri)e.OldValue, (Uri)e.NewValue);
         }
 
-        private void OnSelectedSourceChanged(Uri oldValue, Uri newValue)
+#pragma warning disable S1172 // Unused method parameters should be removed
+        void OnSelectedSourceChanged(Uri oldValue, Uri newValue)
+#pragma warning restore S1172 // Unused method parameters should be removed
         {
             UpdateSelection();
 
             // raise SelectedSourceChanged event
-            EventHandler<SourceEventArgs> handler = SelectedSourceChanged;
-            if (handler != null)
-            {
-                handler(this, new SourceEventArgs(newValue));
-            }
+            SelectedSourceChanged?.Invoke(this, new SourceEventArgs(newValue));
         }
 
-        private void UpdateSelection()
+        void UpdateSelection()
         {
             if (linkList == null || Links == null)
             {
@@ -169,7 +167,7 @@ namespace ModernUI.Windows.Controls
             UpdateSelection();
         }
 
-        private void OnLinkListSelectionChanged(object sender, SelectionChangedEventArgs e)
+        void OnLinkListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Link link = linkList.SelectedItem as Link;
             if (link != null && link.Source != SelectedSource)

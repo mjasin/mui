@@ -14,21 +14,21 @@ namespace ModernUI.App.Content
             InitializeComponent();
         }
 
-        private void CommonDialog_Click(object sender, RoutedEventArgs e)
+        void CommonDialog_Click(object sender, RoutedEventArgs e)
         {
             ModernDialog dlg = new ModernDialog
             {
                 Title = "Common dialog",
                 Content = new LoremIpsum()
             };
-            dlg.Buttons = new[] {dlg.OkButton, dlg.CancelButton};
+            dlg.Buttons = new[] { dlg.OkButton, dlg.CancelButton };
             dlg.ShowDialog();
 
             dialogResult.Text = dlg.DialogResult.HasValue ? dlg.DialogResult.ToString() : "<null>";
             dialogMessageBoxResult.Text = dlg.MessageBoxResult.ToString();
         }
 
-        private void MessageDialog_Click(object sender, RoutedEventArgs e)
+        void MessageDialog_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxButton btn = MessageBoxButton.OK;
             if (true == ok.IsChecked)
