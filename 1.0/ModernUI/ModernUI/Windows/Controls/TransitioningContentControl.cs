@@ -57,7 +57,9 @@ namespace ModernUI.Windows.Controls
         /// </summary>
         Storyboard CurrentTransition
         {
+#pragma warning disable S1144 // Unused private types or members should be removed
             get => _currentTransition;
+#pragma warning restore S1144 // Unused private types or members should be removed
             set
             {
                 // decouple event

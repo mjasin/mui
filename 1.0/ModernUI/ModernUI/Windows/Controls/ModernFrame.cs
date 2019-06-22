@@ -628,7 +628,9 @@ new List<WeakReference<ModernFrame>>();        // list of registered frames in s
         /// </summary>
         public bool IsLoadingContent
         {
+#pragma warning disable S4275 // Getters and setters should access the expected fields
             get => (bool)GetValue(IsLoadingContentProperty);
+#pragma warning restore S4275 // Getters and setters should access the expected fields
 #pragma warning disable S1121 // Assignments should not be made from within sub-expressions
             set => SetValue(IsLoadingContentProperty, (_isLoadingContent = value));
 #pragma warning restore S1121 // Assignments should not be made from within sub-expressions

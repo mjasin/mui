@@ -67,14 +67,16 @@ namespace ModernUI.Windows.Media
             }
         }
 
-        /// <summary>
-        ///     Returns a collection of visual elements that contain specified object, and the ancestors of specified object.
-        /// </summary>
-        /// <param name="dependencyObject">The dependency object.</param>
-        /// <returns>
-        ///     A collection that contains the ancestors elements and the object itself.
-        /// </returns>
+#pragma warning disable S4456 // Parameter validation in yielding methods should be wrapped
+                             /// <summary>
+                             ///     Returns a collection of visual elements that contain specified object, and the ancestors of specified object.
+                             /// </summary>
+                             /// <param name="dependencyObject">The dependency object.</param>
+                             /// <returns>
+                             ///     A collection that contains the ancestors elements and the object itself.
+                             /// </returns>
         public static IEnumerable<DependencyObject> AncestorsAndSelf(this DependencyObject dependencyObject)
+#pragma warning restore S4456 // Parameter validation in yielding methods should be wrapped
         {
             if (dependencyObject == null)
             {

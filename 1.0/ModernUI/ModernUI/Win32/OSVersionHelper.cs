@@ -15,24 +15,28 @@ namespace ModernUI.Win32
     {
         #region Constructor
 
-        /// <summary>
-        ///     Initializes dictionary of operating systems.
-        /// </summary>
+#pragma warning disable S3963 // "static" fields should be initialized inline
+                             /// <summary>
+                             ///     Initializes dictionary of operating systems.
+                             /// </summary>
         static OSVersionHelper()
         {
-            osEntries = new Dictionary<KnownOS, OsEntry>();
-            osEntries.Add(KnownOS.WindowsXP, new OsEntry(5, 1, 0));
-            osEntries.Add(KnownOS.WindowsXPSP1, new OsEntry(5, 1, 1));
-            osEntries.Add(KnownOS.WindowsXPSP2, new OsEntry(5, 1, 2));
-            osEntries.Add(KnownOS.WindowsXPSP3, new OsEntry(5, 1, 3));
-            osEntries.Add(KnownOS.WindowsVista, new OsEntry(6, 0, 0));
-            osEntries.Add(KnownOS.WindowsVistaSP1, new OsEntry(6, 0, 1));
-            osEntries.Add(KnownOS.WindowsVistaSP2, new OsEntry(6, 0, 2));
-            osEntries.Add(KnownOS.Windows7, new OsEntry(6, 1, 0));
-            osEntries.Add(KnownOS.Windows7SP1, new OsEntry(6, 1, 1));
-            osEntries.Add(KnownOS.Windows8, new OsEntry(6, 2, 0));
-            osEntries.Add(KnownOS.Windows8Point1, new OsEntry(6, 3, 0));
+            osEntries = new Dictionary<KnownOS, OsEntry>
+            {
+                { KnownOS.WindowsXP, new OsEntry(5, 1, 0) },
+                { KnownOS.WindowsXPSP1, new OsEntry(5, 1, 1) },
+                { KnownOS.WindowsXPSP2, new OsEntry(5, 1, 2) },
+                { KnownOS.WindowsXPSP3, new OsEntry(5, 1, 3) },
+                { KnownOS.WindowsVista, new OsEntry(6, 0, 0) },
+                { KnownOS.WindowsVistaSP1, new OsEntry(6, 0, 1) },
+                { KnownOS.WindowsVistaSP2, new OsEntry(6, 0, 2) },
+                { KnownOS.Windows7, new OsEntry(6, 1, 0) },
+                { KnownOS.Windows7SP1, new OsEntry(6, 1, 1) },
+                { KnownOS.Windows8, new OsEntry(6, 2, 0) },
+                { KnownOS.Windows8Point1, new OsEntry(6, 3, 0) }
+            };
         }
+#pragma warning restore S3963 // "static" fields should be initialized inline
 
         #endregion // Constructor
 
