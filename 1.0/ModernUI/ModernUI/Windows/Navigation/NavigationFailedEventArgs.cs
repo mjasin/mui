@@ -1,10 +1,9 @@
 ﻿using System;
-using ModernUI.Windows.Controls;
 
 namespace ModernUI.Windows.Navigation
 {
     /// <summary>
-    ///     Provides data for the <see cref="ModernFrame.NavigationFailed" /> event.
+    ///     Provides data for the <see cref="Controls.ModernFrame.NavigationFailed" /> event.
     /// </summary>
     public class NavigationFailedEventArgs
         : NavigationBaseEventArgs

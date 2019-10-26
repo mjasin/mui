@@ -1,9 +1,7 @@
-﻿using ModernUI.Windows.Controls;
-
-namespace ModernUI.Windows.Navigation
+﻿namespace ModernUI.Windows.Navigation
 {
     /// <summary>
-    ///     Provides data for the <see cref="IContent.OnNavigatingFrom" /> method and the <see cref="ModernFrame.Navigating" />
+    ///     Provides data for the <see cref="IContent.OnNavigatingFrom" /> method and the <see cref="Controls.ModernFrame.Navigating" />
     ///     event.
     /// </summary>
     public class NavigatingCancelEventArgs
