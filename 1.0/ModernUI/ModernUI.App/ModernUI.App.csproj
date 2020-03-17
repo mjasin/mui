@@ -480,10 +480,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\..\..\..\..\packages\SonarAnalyzer.CSharp.8.4.0.15306\analyzers\Google.Protobuf.dll" />
-    <Analyzer Include="..\..\..\..\..\packages\SonarAnalyzer.CSharp.8.4.0.15306\analyzers\SonarAnalyzer.CFG.dll" />
-    <Analyzer Include="..\..\..\..\..\packages\SonarAnalyzer.CSharp.8.4.0.15306\analyzers\SonarAnalyzer.CSharp.dll" />
-    <Analyzer Include="..\..\..\..\..\packages\SonarAnalyzer.CSharp.8.4.0.15306\analyzers\SonarAnalyzer.dll" />
+    <Analyzer Include="..\..\..\..\..\packages\SonarAnalyzer.CSharp.8.5.0.15942\analyzers\Google.Protobuf.dll" />
+    <Analyzer Include="..\..\..\..\..\packages\SonarAnalyzer.CSharp.8.5.0.15942\analyzers\SonarAnalyzer.CFG.dll" />
+    <Analyzer Include="..\..\..\..\..\packages\SonarAnalyzer.CSharp.8.5.0.15942\analyzers\SonarAnalyzer.CSharp.dll" />
+    <Analyzer Include="..\..\..\..\..\packages\SonarAnalyzer.CSharp.8.5.0.15942\analyzers\SonarAnalyzer.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
